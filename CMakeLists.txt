@@ -157,9 +157,17 @@ target_compile_definitions(vulkansift PRIVATE VKENV_USE_EMBEDDED_SHADERS=1)
 if(VULKANSIFT_BUILD_EXAMPLES)
 message(STATUS "Examples will be built")
 find_package(OpenCV REQUIRED core highgui)
+
+find_package(Boost REQUIRED COMPONENTS
+             filesystem
+             graph
+             program_options
+             system)
+
 # Example program that read an image, detect and draw the SIFT features
-add_executable(test_sift_detect src/examples/test_sift_detect.cpp src/examples/test_utils.cpp)
-target_link_libraries(test_sift_detect vulkansift ${OpenCV_LIBS})
+add_executable(test_sift_detect src/examples/test_sift_detect.cpp src/examples/test_utils.cpp
+    src/examples/path.cpp src/examples/string.cpp src/examples/timer.cpp)
+target_link_libraries(test_sift_detect vulkansift ${OpenCV_LIBS} ${Boost_LIBRARIES})
 target_compile_options(test_sift_detect PRIVATE "${VULKANSIFT_COMPILER_OPTIONS}")
 set_property(TARGET test_sift_detect APPEND_STRING PROPERTY LINK_FLAGS " ${VULKANSIFT_LINKER_OPTIONS}")
 
